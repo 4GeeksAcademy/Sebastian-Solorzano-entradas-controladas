@@ -1,28 +1,44 @@
 import React from "react";
+import { useState } from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-            
+    const [nuevaTarea, setNuevaTarea] = useState()
+    let [ListaDeTareas, setListaDeTareas] = useState([
+        "Practicar programacion",
+        "Hacer deporte",
+        "Despertarse temprano",
+        "Leer una hora al dia",
+        "Hacer las compras"
 
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+    ])
+    const agregarTarea = (tecla) => {
+        if (tecla === "Enter") {
+            setListaDeTareas([...ListaDeTareas, nuevaTarea.trim()]);
+
+        }
+
+
+}
+    return (
+        <div className="text-center">
+            <div>
+                <h1>Todos</h1>
+                <input onChange={evento => setNuevaTarea(evento.target.value)} type="text" value={nuevaTarea || ""} 
+                onKeyUp={evento => agregarTarea(evento.key)}
+                />
+            </div>
+            {
+                ListaDeTareas.map((tarea, index) => {
+                    return <p key={index}>{tarea} </p>
+
+                })
+            }
+        </div>
+    );
 };
 
-export default Home;
+export default Home
