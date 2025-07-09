@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const tarea = ({ descripcion, onDelete }) => {
+const Tarea = ({ descripcion, onDelete }) => {
 
   const [isHover, setIsHover] = useState(false)
 
@@ -11,4 +11,4 @@ const tarea = ({ descripcion, onDelete }) => {
     </p>
   )
 }
-export default tarea;
+export default Tarea;
