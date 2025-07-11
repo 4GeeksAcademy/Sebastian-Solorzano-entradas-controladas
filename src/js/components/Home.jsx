@@ -7,17 +7,17 @@ import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
-    const apiUrl = " https://playground.4geeks.com/todo/users/Sebastian"
+    const apiUrl = "https://playground.4geeks.com/todo/users/Sebastian"
 
-    const [nuevaTarea, setNuevaTarea] = useState([])
+    const [nuevaTarea, setNuevaTarea] = useState("")
 
-    let [listaDeTareas, setListaDeTareas] = useState("");
+    let [listaDeTareas, setListaDeTareas] = useState([]);
 
     const onload = () => {
         fetch(apiUrl).then(response => {
             return response.json()
         }).then(datos => {
-            setNuevaTarea(datos.todos)
+            setListaDeTareas(datos.todos)
         })
 
 
@@ -34,7 +34,7 @@ const Home = () => {
             fetch('https://playground.4geeks.com/todo/todos/Sebastian', {
                 method: "POST",
                 body: JSON.stringify({
-                    label:listaDeTareas,
+                    label:nuevaTarea,
                     is_done:false
 
                 }),
@@ -45,19 +45,18 @@ const Home = () => {
                 .then(resp => {
                     console.log(resp.ok); 
                     if (resp.ok) {
-                        //onload()
-                        setListaDeTareas("")
+                        setNuevaTarea("");
+                        onload();
                     }
-                    console.log(resp.status); // El código de estado 201, 300, 400, etc.
-                    return resp.json(); // Intentará parsear el resultado a JSON y retornará una promesa donde puedes usar .then para seguir con la lógica
+                    console.log(resp.status); 
+                    return resp.json(); 
                 })
                 .then(data => {
-                    // Aquí es donde debe comenzar tu código después de que finalice la búsqueda
-                    console.log(data); // Esto imprimirá en la consola el objeto exacto recibido del servidor
-                    setListaDeTareas([...listaDeTareas, data]);
+                    
+                    console.log(data); 
+                    
                 })
                 .catch(error => {
-                    // Manejo de errores
                     console.log(error);
                 });
         }
@@ -75,12 +74,11 @@ const Home = () => {
                         onload()
                         
                     }
-                    console.log(resp.status); // El código de estado 201, 300, 400, etc.
+                    console.log(resp.status); 
                     
                 })
                 
                 .catch(error => {
-                    // Manejo de errores
                     console.log(error);
                 });
 
@@ -93,13 +91,13 @@ const Home = () => {
         <div className="text-center">
             <div>
                 <h1>Todos</h1>
-                <input onChange={evento => setNuevaTarea(evento.target.value)} type="text" value={nuevaTarea || ""}
+                <input onChange={evento => setNuevaTarea(evento.target.value)} type="text" value={nuevaTarea}
                     onKeyUp={evento => agregarTarea(evento.key)}
                 />
             </div>
             {
                 listaDeTareas.map((tarea, index) => {
-                    return (<Tarea key={index} descripcion={tarea} onDelete={() => eliminarTarea(tarea.id)} />)
+                    return (<Tarea key={index} descripcion={tarea.label} onDelete={() => eliminarTarea(tarea.id)} />)
 
                 })
             }
